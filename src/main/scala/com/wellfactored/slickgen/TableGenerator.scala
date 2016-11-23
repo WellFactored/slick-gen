@@ -1,4 +1,4 @@
-package com.wellfactored.slickGen
+package com.wellfactored.slickgen
 
 import com.wellfactored.propertyinfo.{Property, PropertyInfo, PropertyInfoGen}
 import shapeless.Typeable
