@@ -16,6 +16,8 @@ libraryDependencies ++= Seq(
 )
 
 
+git.useGitDescribe := true
+
 buildInfoKeys := Seq[BuildInfoKey](name, version, scalaVersion, sbtVersion)
 
 buildInfoPackage := "com.wellfactored.slickgen.buildinfo"
