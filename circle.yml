@@ -4,11 +4,11 @@ machine:
 
 dependencies:
   override:
-    - cat /dev/null | sbt coverage test:compile
+    - cat /dev/null | sbt coverage +test:compile
 
 test:
   override:
-    - sbt coverage test:test
+    - sbt coverage +test:test
   post:
     - sbt coverageReport coverageAggregate
     - mkdir -p $CIRCLE_TEST_REPORTS/junit/
