@@ -8,11 +8,12 @@ name := "slick-gen"
 
 organization := "com.wellfactored"
 
+crossScalaVersions := Seq("2.10.6", "2.11.8", "2.12.1")
+
 scalaVersion := "2.11.8"
 
 libraryDependencies ++= Seq(
-  "com.wellfactored" %% "property-info" % "1.0.0",
-  "com.typesafe.slick" %% "slick" % "3.1.1"
+  "com.wellfactored" %% "property-info" % "1.1.1"
 )
 
 
