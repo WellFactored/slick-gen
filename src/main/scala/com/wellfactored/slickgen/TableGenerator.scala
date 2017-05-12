@@ -14,6 +14,8 @@ trait StringOps {
 trait TableGen {
   def genTable(): Seq[String]
 
+  def genSchema: String
+
   def typeMappers: Seq[TypeMapper]
 }
 
@@ -27,6 +29,8 @@ class TableGenerator[T](implicit ty: Typeable[T], pi: PropertyInfo[T]) extends T
   val tableSQLName = decamelise(root).toLowerCase
   val tableClassName = s"${root}Table"
   val classDef = s"""class $tableClassName(tag: Tag) extends Table[$name](tag, "$tableSQLName")"""
+
+  override def genSchema = s"${lowerCaseFirst(root)}Table.schema"
 
   def generateDefsForColumn(col: TableColumn[_]): Seq[String] = {
     val colOpts = if (col.opts.isEmpty) "" else s""", ${col.opts.mkString(", ")}"""

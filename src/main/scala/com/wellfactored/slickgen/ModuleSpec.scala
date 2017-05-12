@@ -22,18 +22,20 @@ case class ModuleSpec(name: String, tables: Seq[TableGen] = Seq(), dependsOn: Se
       .filter(tm => !importedTypeMappers.contains(tm))
 
   def generate: Seq[String] = {
-    val selfTypes: Seq[String] = "DBBinding" +: dependsOn.map(_.spec.name)
+    val selfTypes: Seq[String] = dependsOn.map(_.spec.name)
     val traitDef = Seq(
-      s"trait $name {",
-      s"  self: ${selfTypes.mkString(" with ")} =>",
-      s"  import driver.api._"
+      s"trait $name extends DBBinding {",
+      if (dependsOn.nonEmpty) s"  self: ${selfTypes.mkString(" with ")} =>" else "",
+      s"  import api._"
     )
 
     val tableDefs = tables.flatMap("" +: _.genTable())
 
+    val schemaGen = Seq("override def schema = super.schema" + tables.map(" ++ " + _.genSchema).mkString)
+
     val foot = Seq("}")
 
-    (traitDef :: typeMappers.map(_.asString).indent(2) :: tableDefs.indent(2) :: foot :: Nil).flatten
+    (traitDef :: typeMappers.map(_.asString).indent(2) :: tableDefs.indent(2) :: schemaGen.indent(2) :: foot :: Nil).flatten
   }
 
   def withTable[T](t: TableGenerator[T]) = copy(tables = t +: tables)
